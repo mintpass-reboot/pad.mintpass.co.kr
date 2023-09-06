@@ -1,6 +1,7 @@
 // This is your Prisma schema file,
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
+
 datasource db {
   provider = "mysql"
   url      = env("DATABASE_URL")
@@ -10,15 +11,58 @@ generator client {
   provider = "prisma-client-js"
 }
 
-
 model User {
-  sub                String         @id
+  id  String    @id
 
-  id_token           Json?
+  name String
+  nick String
 
-  firstJoin          DateTime       @default(now())
-  lastAuthorized     DateTime       @default(now())
+  blog    Blog? 
+}
 
-  isAdmin            Boolean        @default(false)
-  isBanned           Boolean        @default(false)
+model Blog {
+  idx     Int     @id @default(autoincrement())
+  name    String
+  imgFile String?
+
+  owner User @relation(fields: [ownerId], references: [id])
+  ownerId String @unique
+
+  isBest Boolean @default(false)
+
+  posts BlogPost[]
+}
+
+model BlogPost {
+  idx     Int @id @default(autoincrement())
+  title   String
+
+  contents String
+
+  imageUrl String?
+  
+  blog Blog @relation(fields: [blogIdx], references: [idx])
+  blogIdx Int
+
+  createdAt DateTime @default(now())
+  modifiedAt DateTime @default(now())
+
+  comments BlogPostComment[]
+  commentAllowed Boolean @default(true)
+}
+
+model BlogPostComment {
+  idx Int @id @default(autoincrement())
+  
+  post BlogPost @relation(fields: [postIdx], references: [idx])
+  postIdx Int
+}
+
+model File {
+  id String @id @default(uuid())
+
+  target String
+
+  filename String
+  data Bytes
 }

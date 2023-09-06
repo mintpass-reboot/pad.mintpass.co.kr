@@ -8,6 +8,7 @@ import { sentryErrorHandler } from './common/sentry';
 import { APIError, APIErrorType } from './common/error';
 import path from 'path';
 import fastifyAutoload from '@fastify/autoload';
+import fastifyMultipart from '@fastify/multipart';
 
 export const packageJson = JSON.parse(fs.readFileSync('package.json', { encoding: 'utf-8' }));
 
@@ -35,6 +36,7 @@ const app = fastify({
     : false,
 });
 
+app.register(fastifyMultipart);
 app.register(fastifyCors, {
   origin: true,
 });

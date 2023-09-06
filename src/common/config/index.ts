@@ -1,7 +1,4 @@
 export interface Config {
-  meiling: {
-    hostname: string;
-  };
   fastify: {
     listen: {
       port: number;
@@ -17,9 +14,6 @@ export interface Config {
     proxy?: {
       allowedHosts?: string[];
     };
-  };
-  permissions: {
-    required: string[];
   };
   admin: {
     token: string[];

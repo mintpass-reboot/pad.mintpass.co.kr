@@ -1,30 +1,38 @@
 {
-  "name": "app-api",
+  "name": "mintpass-reboot-pad",
   "version": "0.0.1",
-  "description": "App API",
+  "description": "Mintpass Reboot Project",
   "main": "dist/",
-  "repository": "https://github.com/meili-NG/api-template",
+  "repository": "https://github.com/mintpass-reboot/pad.mintpass.co.kr",
   "author": "Alex4386 <psh010209@gmail.com>",
   "private": true,
   "banner": {
-    "title": "APP API"
+    "title": "mintpass"
   },
   "dependencies": {
     "@fastify/autoload": "^5.7.1",
     "@fastify/cors": "^8.3.0",
+    "@fastify/multipart": "^7.7.3",
     "@prisma/client": "^4.2.1",
     "@sentry/node": "^7.10.0",
     "@sentry/tracing": "^7.10.0",
     "@sentry/types": "^7.10.0",
     "axios": "^0.21.1",
     "dotenv": "^16.0.1",
-    "fastify": "^4.21.0",
+    "fastify": "^4.22.2",
     "figlet": "^1.5.0",
+    "iconv-lite": "^0.6.3",
+    "ip": "^1.1.8",
+    "mime": "^3.0.0",
     "pino-pretty": "^4.5.0",
-    "typescript": "^5.1.6"
+    "sharp": "^0.32.5",
+    "typescript": "^5.1.6",
+    "xmlbuilder2": "^3.1.1"
   },
   "devDependencies": {
     "@types/figlet": "^1.2.1",
+    "@types/ip": "^1.1.0",
+    "@types/mime": "^3.0.1",
     "@types/node": "^14.14.7",
     "@typescript-eslint/eslint-plugin": "^4.7.0",
     "@typescript-eslint/parser": "^4.7.0",

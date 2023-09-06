@@ -7,14 +7,10 @@ export function showBanner(): void {
 
   console.log(Figlet.textSync(title, 'Small Slant'));
   console.log();
-  console.log(`${chalk.bold(title)} - ${chalk.italic(`ver. ${packageJson.version}`)}`);
+  console.log(`${chalk.bold(packageJson.name)} - ${chalk.italic(`ver. ${packageJson.version}`)}`);
   console.log(chalk.cyan(chalk.underline(packageJson.repository)));
   console.log();
-  console.log(
-    `Copyright © meiliNG Contributors and ${chalk.bold(
-      `${chalk.cyan('Stella')} ${chalk.blue('IT')} ${chalk.magenta('Inc.')}`,
-    )}`,
-  );
+  console.log(`Copyright © ${chalk.bold(`${chalk.gray('mintpass')} ${chalk.greenBright('reboot')} Project`)}`);
   console.log('Distributed under MIT License');
   console.log();
 }

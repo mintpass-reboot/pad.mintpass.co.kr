@@ -1,4 +1,5 @@
 import { FastifyReply } from 'fastify';
+import * as XMLBuilder from 'xmlbuilder2';
 
 export interface ErrorResponse {
   type: APIErrorType;
@@ -21,6 +22,7 @@ export enum APIErrorType {
   HAVE_A_NICE_PAY = 'Have_a_Nice_Pay___LG_Pay',
   UNSUPPORTED = 'unsupported',
   UNAUTHORIZED = 'unauthorized',
+  NOT_FOUND = 'not_found',
 }
 
 export class APIError extends Error {
@@ -71,13 +73,39 @@ export class APIError extends Error {
     return base;
   }
 
+  public serializeXML(): string {
+    const xml = XMLBuilder.create();
+    xml
+      .ele('error')
+      .ele('type')
+      .txt(this.type)
+      .up()
+      .ele('name')
+      .txt(this.name)
+      .up()
+      .ele('description')
+      .txt(this.description ?? '')
+      .up()
+      .up();
+
+    return xml.end();
+  }
+
   public getStatusCode() {
     const type = this.type;
     return getStatusCode(type);
   }
 
   public sendFastify(rep: FastifyReply) {
-    rep.status(this.getStatusCode()).send(this.serialize());
+    rep.status(this.getStatusCode());
+
+    console.log(rep.getHeader('content-type'));
+
+    if (rep.getHeader('content-type') === 'application/xml' || (rep as any).isXML) {
+      rep.header('content-type', 'application/xml').send(this.serializeXML());
+    } else {
+      rep.send(this.serialize());
+    }
   }
 }
 
@@ -92,6 +120,8 @@ export function getStatusCode(error: APIErrorType): number {
     case APIErrorType.INSUFFICIENT_PERMISSION:
     case APIErrorType.USER_NOT_FOUND:
       return 403;
+    case APIErrorType.NOT_FOUND:
+      return 404;
     case APIErrorType.HAVE_A_NICE_PAY:
       return 418;
     case APIErrorType.INTERNAL_SERVER_ERROR:

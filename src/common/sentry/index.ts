@@ -2,7 +2,6 @@ import { FastifyInstance, FastifyPluginOptions, FastifyReply, FastifyRequest } f
 import * as Sentry from '@sentry/node';
 import Tracing, { Transaction } from '@sentry/tracing';
 import { config } from '../..';
-import { FastifyRequestWithUser } from '../../routes/v1';
 
 const DEFAULT_REQUEST_KEYS = ['headers', 'method', 'query_string', 'url'];
 
@@ -93,17 +92,6 @@ export function registerSentryTransaction(app: FastifyInstance, opts: FastifyPlu
         const tx = getSentryTransaction(req);
 
         if (tx) {
-          const user = (req as FastifyRequestWithUser).user;
-
-          if (user) {
-            scope.setUser({
-              id: user?.sub,
-              ip: req.ip,
-              username: user?.preferred_username,
-              email: user?.email,
-            });
-          }
-
           tx.setData('url', req.url);
           tx.setData('query', req.query);
 
@@ -124,20 +112,9 @@ export function registerSentryTransaction(app: FastifyInstance, opts: FastifyPlu
 
 export function sentryErrorHandler(error: Error, req: FastifyRequest, rep: FastifyReply) {
   Sentry.withScope(async (scope) => {
-    const user = (req as FastifyRequestWithUser).user;
-
-    if (user) {
-      scope.setUser({
-        id: user?.sub,
-        ip: req.ip,
-        username: user?.preferred_username,
-        email: user?.email,
-      });
-    } else {
-      scope.setUser({
-        ip: req.ip,
-      });
-    }
+    scope.setUser({
+      ip: req.ip,
+    });
 
     scope.setLevel('error');
     scope.setTag('method', req.method);
