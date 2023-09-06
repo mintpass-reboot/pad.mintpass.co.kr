@@ -1,0 +1,64 @@
+{
+  "name": "app-api",
+  "version": "0.0.1",
+  "description": "App API",
+  "main": "dist/",
+  "repository": "https://github.com/meili-NG/api-template",
+  "author": "Alex4386 <psh010209@gmail.com>",
+  "private": true,
+  "banner": {
+    "title": "APP API"
+  },
+  "dependencies": {
+    "@fastify/autoload": "^5.7.1",
+    "@fastify/cors": "^8.3.0",
+    "@prisma/client": "^4.2.1",
+    "@sentry/node": "^7.10.0",
+    "@sentry/tracing": "^7.10.0",
+    "@sentry/types": "^7.10.0",
+    "axios": "^0.21.1",
+    "dotenv": "^16.0.1",
+    "fastify": "^4.21.0",
+    "figlet": "^1.5.0",
+    "pino-pretty": "^4.5.0",
+    "typescript": "^5.1.6"
+  },
+  "devDependencies": {
+    "@types/figlet": "^1.2.1",
+    "@types/node": "^14.14.7",
+    "@typescript-eslint/eslint-plugin": "^4.7.0",
+    "@typescript-eslint/parser": "^4.7.0",
+    "eslint": "^7.13.0",
+    "eslint-config-prettier": "^6.15.0",
+    "eslint-plugin-prettier": "^3.1.4",
+    "husky": "^4.3.0",
+    "lint-staged": "^10.5.1",
+    "nodemon": "^2.0.7",
+    "prettier": "^2.1.2",
+    "prisma": "^4.2.1",
+    "ts-node": "^9.0.0"
+  },
+  "scripts": {
+    "debug": "ts-node ./src/",
+    "build": "tsc",
+    "start:dev": "nodemon",
+    "start": "tsc && NODE_ENV=production node ./dist/",
+    "lint": "eslint '*/**/*.{js,ts,tsx}' --quiet --fix",
+    "studio": "prisma studio",
+    "migrate:deploy": "prisma migrate deploy --preview-feature",
+    "migrate:dev": "prisma migrate dev --preview-feature",
+    "migrate:reset": "prisma migrate reset --preview-feature",
+    "migrate:redeploy": "prisma migrate reset --preview-feature; rm -rf ./prisma/migrations/; prisma migrate dev --preview-feature",
+    "generate": "prisma generate"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "*.{js,ts,tsx}": [
+      "eslint --fix"
+    ]
+  }
+}
