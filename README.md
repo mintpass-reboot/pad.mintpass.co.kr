@@ -1,12 +1,28 @@
-# meiliNG API Application Template
-This template repository is for API utilizing meiliNG Account System (via oAuth2 Auth)
+# 민트패스 리부트 프로젝트
+민트패드를 다시 인터넷으로.  
+(주)민트패스의 민트패드의 서비스를 이용 할 수 있도록 호환 목적으로 클린룸 리버스 엔지니어링 후 개발된 API서버의 재 구현체입니다.  
+  
+본 레포지토리는 민트패스 서버 중 pad.mintpass.co.kr에 해당하는 서버의 소스코드입니다.  
 
-## GitHub Actions Status
-**Warning :** Make sure you change this badge locations and names before you use it on your repository!  
+## 구현된 서비스
+* 블로그
+  - 내 블로그 조회
+  - 내 블로그에 글 올리기
+  - 파일 업로드
+  - 파워 블로거 10 (베스트 블로거)
 
+## 사용 방법
+기존 민트패스 사이트에서 제품등록이 되어있어, 민트패스 아이디가 이미 발급이 되어있는 경우, 별도 변경사항 없이 사용이 가능합니다.  
+제품 등록이 되어있지 않은 민트패드의 경우 본체내의 DB 파일 수정을 통한 강제등록 조치가 필요합니다. (추후 안내 예정)  
+
+## 경고
+민트패드의 보안 설계 특성상 사용자 아이디로 인증이 진행되기 때문에, 현대의 인터넷 기준으로는 취약한 보안 설계에 해당합니다.  
+**절대 민감한 정보를 업로드 하지 말아주세요.**  
+
+## CI 상태
 | Name                      | Status                                                                                                         |
 |---------------------------|----------------------------------------------------------------------------------------------------------------|
-| ESLint                    | ![ESLint](https://github.com/meili-NG/api-template/workflows/ESLint/badge.svg)                                 |
+| ESLint                    | ![ESLint](https://github.com/mintpass-reboot/pad.mintpass.co.kr/workflows/ESLint/badge.svg)                                 |
 
 ## License
 [MIT License](LICENSE)
