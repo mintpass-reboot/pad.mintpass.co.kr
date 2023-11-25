@@ -23,6 +23,7 @@ export enum APIErrorType {
   UNSUPPORTED = 'unsupported',
   UNAUTHORIZED = 'unauthorized',
   NOT_FOUND = 'not_found',
+  NOT_IMPLEMENTED = 'not_implemented',
 }
 
 export class APIError extends Error {
@@ -127,6 +128,7 @@ export function getStatusCode(error: APIErrorType): number {
     case APIErrorType.INTERNAL_SERVER_ERROR:
       return 500;
     case APIErrorType.UNSUPPORTED:
+    case APIErrorType.NOT_IMPLEMENTED:
       return 501;
   }
 

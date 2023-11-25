@@ -7,6 +7,13 @@ import { User } from '@prisma/client';
 import iconv from 'iconv-lite';
 import { urlDecodeBytes } from '../../../common/utils';
 
+enum MintPadBlogSearchEnum {
+  SUBJECT = 'Subject',
+  BLOGNAME = 'BlogName',
+  NICKNAME = 'NickName',
+  TAG = 'Tag',
+}
+
 export default function blogPlugin(app: FastifyInstance, opts: FastifyPluginOptions, done: () => void) {
   app.get('/', (req, rep) => {
     const xml = XMLBuilder.create();
@@ -161,6 +168,82 @@ export default function blogPlugin(app: FastifyInstance, opts: FastifyPluginOpti
 
     const xml = XMLBuilder.create();
     rep.send(xml.ele('boolean').txt('true').up().end());
+  });
+
+  app.get('/srchItem', async (req, rep) => {
+    // srchItem, srchString, UId, page
+    const pageSize = 5;
+
+    const { srchItem, srchString, UId, page } = (req.body as Record<string, any>) || {};
+    if ([srchItem, srchString, UId, page].find((n) => typeof n !== 'string'))
+      throw new APIError(APIErrorType.INVALID_REQUEST);
+
+    if (!Object.values(MintPadBlogSearchEnum).includes(srchItem)) throw new APIError(APIErrorType.INVALID_REQUEST);
+
+    let queryBuilder = {};
+    switch (srchItem) {
+      case MintPadBlogSearchEnum.BLOGNAME:
+        queryBuilder = {
+          ...queryBuilder,
+          blog: {
+            name: { in: srchString },
+          },
+        };
+        break;
+      case MintPadBlogSearchEnum.NICKNAME:
+        queryBuilder = {
+          ...queryBuilder,
+          blog: {
+            owner: {
+              nick: { in: srchString },
+            },
+          },
+        };
+        break;
+      case MintPadBlogSearchEnum.SUBJECT:
+        queryBuilder = {
+          ...queryBuilder,
+          title: { in: srchString },
+        };
+        break;
+      case MintPadBlogSearchEnum.TAG:
+        queryBuilder = {
+          ...queryBuilder,
+          title: { in: srchString },
+        };
+        break;
+    }
+
+    if (srchItem === MintPadBlogSearchEnum.BLOGNAME) {
+      queryBuilder = {
+        ...queryBuilder,
+        blog: {
+          name: {
+            in: srchString,
+          },
+        },
+      };
+    }
+
+    if (srchItem === MintPadBlogSearchEnum.BLOGNAME) {
+      queryBuilder = {
+        ...queryBuilder,
+        blog: {
+          name: {
+            in: srchString,
+          },
+        },
+      };
+    }
+
+    const posts = await prisma.blogPost.findMany({
+      where: {
+        ...queryBuilder,
+      },
+    });
+
+    // TODO: Implement it later
+    throw new APIError(APIErrorType.NOT_IMPLEMENTED);
   });
 
   app.get('/RecentPost', async (req, rep) => {
